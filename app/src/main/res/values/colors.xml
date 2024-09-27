@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="appTheme">#009688</color>
+    <color name="Red">#FF8A80</color>
+    <color name="Blue">#0000FF</color>
+    <color name="Green">#A8D5BA</color>
+    <color name="Orange">#FFCC80</color>
+    <color name="Yellow">#FFF9C4</color>
+    <color name="Grey">#808080</color>
+    <color name="LightGrey">#F0F0F0</color>
+    <color name="OldLace">#FDF5E6</color>
+    <color name="Coral">#FF7F50</color>
+</resources>
