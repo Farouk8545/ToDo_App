@@ -1,5 +1,7 @@
 package com.example.todoapp.adapters
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -31,7 +33,7 @@ class MyAdapter(private val context: Context, private val taskViewModel: TaskVie
     private lateinit var scheduler: AndroidAlarmScheduler
     private var alarmItem: AlarmItem? = null
     private val priorityMap = mapOf(
-        "What ever" to R.color.Green,
+        "Not Important" to R.color.Green,
         "If there is time" to R.color.Yellow,
         "When there is time" to R.color.Orange,
         "Urgent" to R.color.Red
@@ -43,7 +45,17 @@ class MyAdapter(private val context: Context, private val taskViewModel: TaskVie
             binding.priorityText.text = task.priority
             binding.notesText.text = task.notes
             binding.doneButton.isChecked = task.isDone
+            binding.taskCardLayout.setBackgroundColor(
+                if(binding.doneButton.isChecked) {
+                    ContextCompat.getColor(binding.root.context, R.color.appTheme)
+                } else {
+                    ContextCompat.getColor(binding.root.context, R.color.OldLace)
+                })
+            val color = if(binding.doneButton.isChecked) ContextCompat.getColor(binding.root.context, R.color.white) else ContextCompat.getColor(binding.root.context, R.color.black)
+            binding.textColor = color
             binding.reminderTimeText.text = if(task.alarmItem != null) String.format("Reminder At: %02d:%02d", task.alarmItem?.time?.hour, task.alarmItem?.time?.minute) else "No Reminder Setted"
+            val startColor = ContextCompat.getColor(binding.root.context, R.color.OldLace)
+            val endColor = ContextCompat.getColor(binding.root.context, R.color.appTheme)
 
             if(binding.notesText.text.isEmpty()) binding.dropDownUpButton.visibility = View.GONE else binding.dropDownUpButton.visibility = View.VISIBLE
 
@@ -51,13 +63,26 @@ class MyAdapter(private val context: Context, private val taskViewModel: TaskVie
             backgroundDrawable?.setColor(ContextCompat.getColor(binding.root.context, priorityMap[binding.priorityText.text.toString()] ?: R.color.white))
             binding.priorityField.background = backgroundDrawable
 
-            binding.doneButton.setOnClickListener{
-                taskViewModel.updateTaskStatus(task.id, binding.doneButton.isChecked)
-                if (binding.doneButton.isChecked && task.alarmItem != null) {
-                    scheduler = AndroidAlarmScheduler(context)
-                    scheduler.cancel(task.alarmItem, task.id)
-                    taskViewModel.updateTask(TaskModel(task.id, task.taskName, task.isDone, task.notes, task.priority, null))
+            binding.doneButton.setOnCheckedChangeListener { _, isChecked ->
+                taskViewModel.updateTaskStatus(task.id, isChecked)
+
+                if (isChecked) {
+                    // Animate the card color change
+                    animateColorTransition(binding.taskCardLayout, startColor, endColor, 500)
+
+                    // If there's an alarm, cancel it
+                    if (task.alarmItem != null) {
+                        scheduler = AndroidAlarmScheduler(context)
+                        scheduler.cancel(task.alarmItem, task.id)
+
+                        // Update task without alarm
+                        taskViewModel.updateTask(TaskModel(task.id, task.taskName, isChecked, task.notes, task.priority, null))
+                    }
+                } else {
+                    // Reset color transition if unchecked
+                    animateColorTransition(binding.taskCardLayout, endColor, startColor, 500)
                 }
+                taskViewModel.updateTask(TaskModel(task.id, task.taskName, isChecked, task.notes, task.priority, task.alarmItem))
             }
 
             binding.dropDownUpButton.setOnClickListener {
@@ -249,5 +274,18 @@ class MyAdapter(private val context: Context, private val taskViewModel: TaskVie
 
             override fun onAnimationRepeat(animation: Animation?) {}
         })
+    }
+
+    private fun animateColorTransition(view: View, startColor: Int, endColor: Int, duration: Long) {
+        val colorAnimator = ValueAnimator.ofObject(ArgbEvaluator(), startColor, endColor)
+        colorAnimator.duration = duration
+
+        colorAnimator.addUpdateListener { animator ->
+            // Update the background color of the view during the animation
+            view.setBackgroundColor(animator.animatedValue as Int)
+        }
+
+        // Start the animation
+        colorAnimator.start()
     }
 }

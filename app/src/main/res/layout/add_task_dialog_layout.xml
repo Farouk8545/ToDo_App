@@ -37,6 +37,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="64dp"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
         android:theme="@style/WhiteOutlineInputTextField"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -45,7 +47,8 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Task"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,6 +60,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
         android:theme="@style/WhiteOutlineInputTextField"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -65,7 +70,8 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Notes"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

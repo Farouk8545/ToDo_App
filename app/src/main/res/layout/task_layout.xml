@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="text_color"
+            type="int" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,10 +22,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:cardCornerRadius="48dp"
-            app:cardBackgroundColor="@color/OldLace">
+            app:cardCornerRadius="48dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/task_card_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="8dp">
@@ -44,7 +47,8 @@
                     android:layout_marginTop="8dp"
                     android:textSize="17sp"
                     android:textStyle="bold"
-                    android:maxWidth="140dp"/>
+                    android:maxWidth="140dp"
+                    android:textColor="@{text_color}"/>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/priority_field"
@@ -83,7 +87,8 @@
                     android:layout_marginEnd="8dp"
                     android:textSize="17sp"
                     android:maxWidth="100dp"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:textColor="@{text_color}"/>
 
                 <ImageButton
                     android:id="@+id/drop_down_up_button"
